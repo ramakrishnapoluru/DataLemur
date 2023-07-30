@@ -1,0 +1,5 @@
+SELECT user_id
+FROM emails E
+JOIN texts T ON E.email_id = T.email_id
+WHERE DATE (signup_date) + 1 = DATE (action_date)
+	AND signup_action = 'Confirmed'
