@@ -1,0 +1,19 @@
+SELECT card_name
+	,SUM(difference) difference
+FROM (
+	SELECT card_name
+		,issued_amount - CASE 
+			WHEN lag(issued_amount) OVER (
+					PARTITION BY card_name ORDER BY issue_year
+						,issue_month
+					) IS NULL
+				THEN issued_amount
+			ELSE lag(issued_amount) OVER (
+					PARTITION BY card_name ORDER BY issue_year
+						,issue_month
+					)
+			END AS difference
+	FROM monthly_cards_issued
+	) AS RESULT
+GROUP BY card_name
+ORDER BY 2 DESC
