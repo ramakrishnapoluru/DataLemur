@@ -1,0 +1,14 @@
+SELECT manufacturer
+	,SUM(drug_count) AS drug_count
+	,SUM(total_loss) * - 1 total_loss
+FROM (
+	SELECT manufacturer
+		,COUNT(1) AS drug_count
+		,SUM(total_sales) - SUM(cogs) AS total_loss
+	FROM pharmacy_sales
+	GROUP BY manufacturer
+		,drug
+	HAVING SUM(total_sales) - SUM(cogs) < 0
+	) AS RES
+GROUP BY manufacturer
+ORDER BY 3 DESC
