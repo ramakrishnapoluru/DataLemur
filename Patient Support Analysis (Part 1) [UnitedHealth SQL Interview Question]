@@ -1,0 +1,7 @@
+SELECT COUNT(1) AS member_count
+FROM (
+	SELECT DISTINCT policy_holder_id AS member_count
+	FROM callers
+	GROUP BY policy_holder_id
+	HAVING COUNT(DISTINCT case_id) >= 3
+	) AS RESULT
