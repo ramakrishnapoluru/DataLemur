@@ -1,0 +1,7 @@
+SELECT ROUND(SUM(CASE 
+				WHEN call_category IS NULL
+					OR call_category = 'n/a'
+					THEN 1
+				ELSE 0
+				END) * 100.00 / COUNT(case_id), 1) AS call_percentage
+FROM callers
